@@ -7,10 +7,21 @@ $statement->execute();
 $products = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 //Getting cart from database
-$statement = $pdo->prepare("SELECT product_id, name, price, image, quantity FROM cart");
-$statement->execute();
-$cart = $statement->fetchAll(PDO::FETCH_ASSOC);
+if(isset($_SESSION["id"])){
+    $statement = $pdo->prepare(
+    "SELECT product_id, name, price, image, quantity 
+    FROM cart 
+    WHERE user_id = :user_id");
+    $statement->execute([
+    ":user_id"     => $_SESSION["id"]
+    ]);
 
+    $cart = $statement->fetchAll(PDO::FETCH_ASSOC);
+}else{
+    $statement = $pdo->prepare("SELECT product_id, name, price, image, quantity FROM cart WHERE user_id = 0");
+    $statement->execute();
+    $cart = $statement->fetchAll(PDO::FETCH_ASSOC);  
+}
 /*
 $products[$i]['name']
 

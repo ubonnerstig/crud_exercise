@@ -35,6 +35,18 @@ require '../includes/database.php';
 				":image"     => $_POST["image"],
 				":quantity"     => $_POST["quantity"]
 				]);	
+				
+				if(isset($_SESSION["id"])){
+				$statement = $pdo->prepare(
+				"UPDATE cart 
+				SET user_id = :user_id
+				WHERE user_id = 0;"
+				);
+			
+				$statement->execute([
+				":user_id"     => $_SESSION["id"]
+				]);
+				}
 
 				header("Location: ../index.php?");
 			}
@@ -56,7 +68,6 @@ require '../includes/database.php';
 						":name"     => $_POST["name"]
 						]);	
 
-						//echo "LAGT TILL QTY";
 						header("Location: ../index.php?");
 						return;
 					}
@@ -75,6 +86,18 @@ require '../includes/database.php';
 				":image"     => $_POST["image"],
 				":quantity"     => $_POST["quantity"]
 				]);	
+
+				if(isset($_SESSION["id"])){
+				$statement = $pdo->prepare(
+				"UPDATE cart 
+				SET user_id = :user_id
+				WHERE user_id = 0;"
+				);
+			
+				$statement->execute([
+				":user_id"     => $_SESSION["id"]
+				]);
+				}
 				
 				header("Location: ../index.php?");
 			}

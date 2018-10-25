@@ -1,11 +1,10 @@
 <?php
 session_start();
 
+require '../includes/database.php';
 include '../includes/products.php'; 
 include '../includes/functions.php'; 
-include '../includes/formvalidation.php'; 
-//require '../includes/database.php'
-	
+include '../includes/formvalidation.php'; 	
 ?>
 
 <!DOCTYPE html>

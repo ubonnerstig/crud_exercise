@@ -44,7 +44,7 @@ kör require istället för include?
 <?php
 		include 'includes/cart.php';
 			
-		highlight_string("<?php =\n" . var_export($products, true) . ";\n?>");
+	/*	highlight_string("<?php =\n" . var_export($products, true) . ";\n?>"); */
 		
 ?>				
 		<header class="row justify-content-start">

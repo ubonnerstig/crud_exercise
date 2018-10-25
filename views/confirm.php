@@ -1,9 +1,9 @@
 <?php
 session_start();
-
-include 'products.php'; 
-include 'functions.php'; 
-include 'formvalidation.php'; 
+require '../includes/database.php'; 
+include '../includes/products.php'; 
+include '../includes/functions.php'; 
+include '../includes/formvalidation.php'; 
 	
 ?>
 
@@ -20,19 +20,15 @@ include 'formvalidation.php';
 
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
 
 </head>
 <body>
 	<div class="container-fluid">
-	
-<?php
-		include 'cart.php'
-?>
 					
 		<header class="row justify-content-start">						
 					<div class="col-12 col-md-6 logo">
-						<a href="index.php"><h1 class="gradient-text">LIGHT <i class="fas fa-moon gradient-text"></i> <br>TRAVEL </h1></a>
+						<a href="../index.php"><h1 class="gradient-text">LIGHT <i class="fas fa-moon gradient-text"></i> <br>TRAVEL </h1></a>
 					</div>
 		</header>
 
