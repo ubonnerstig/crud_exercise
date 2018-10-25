@@ -311,6 +311,7 @@ header ul li p {
 }
 
 .checkout {
+	border-width: 0px;
 	box-shadow: 0;
 	display: block;
 	margin: 0.5rem auto;

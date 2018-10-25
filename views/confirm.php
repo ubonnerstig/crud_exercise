@@ -37,68 +37,60 @@ include '../includes/formvalidation.php';
 			<div class="row justify-content-around">
 			
 				<div class="col-12 col-md-6 checkout-form">
+					<?php if(isset($_SESSION['username'])){ ?>
 					<h2>Shipping information</h2>
-					<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" id="order">
-						<input class="input-style" aria-label="Name" placeholder="Name" id="firstname" name="firstname" type="text">
-						<span class="error"><?=$firstnameErr;?></span><br>
-						<input class="input-style" aria-label="Surname" id="lastname" name="lastname" type="text" placeholder="Surname">
-						<span class="error"><?=$lastnameErr;?></span><br>
-						<input class="input-style" aria-label="Street" id="street" name="street" type="text" placeholder="Street">
-						<span class="error"><?=$streetErr;?></span><br>
-						<input class="input-style" aria-label="Post code" id="postal" name="postal" type="number" size="5" maxlength="5" placeholder="Post code">
-						<span class="error"><?=$postalErr;?></span><br>	
-						<input class="input-style" aria-label="City" id="city" name="city" type="text" placeholder="City">
-						<span class="error"><?=$cityErr;?></span><br>
-						<input class="input-style" aria-label="Phone number" id="phone" name="phone" type="number" placeholder="Phone number">
-						<span class="error"><?=$phoneErr;?></span><br>
-						<input class="input-style" aria-label="E-mail" id="email" name="email" type="email" placeholder="E-mail">
-						<span class="error"><?=$emailErr;?></span><br>
-														
+
+					<?php }else{?>
+					<h3>Please log in before proceeding to checkout</h3>
+					<form action="login.php" method="POST">
+						<input class="login-field" aria-label="Username" placeholder="Username" name="username" type="text"><br>
+						<input class="login-field" aria-label="Password" placeholder="Password" name="password" type="password"><br>
+						<input class="login-button" type="submit" value="Log in">	
 					</form>
-					
+					<?php }?>
 				</div>
 
 				<div class="col-12 col-md-6">
 					<h2>Cart</h2>
-					<?php if(isset($_SESSION["cart"])){
-						if(count($_SESSION["cart"]) == 0){
+					<?php 
+						if(count($cart) === 0){
 							?>
 						<h2>Your cart is empty!</h2>				
 					<?php 
 						}
 						else {
-							for($i=0;$i<count($_SESSION["cart"]);$i++){						
+							for($i=0;$i<count($cart);$i++){						
 							?>
 							
 					<!-- DET SOM SKICKAS MED FORMULÄRET NÄR MAN LÄGGER SIN ORDER -->
-					<input type="hidden" name="count" id="count" value="<?= count($_SESSION["cart"]);?>" form="order">
+					<input type="hidden" name="count" id="count" value="<?= count($cart);?>" form="order">
 					<input type="hidden" name="total" id="total" value="<?=$sum;?>" form="order">
-					<input type="hidden" name="<?=$i;?>image" id="image" value="<?=$_SESSION["cart"][$i]["image"];?>" form="order">
-					<input type="hidden" name="<?=$i;?>name" id="name" value="<?=$_SESSION["cart"][$i]["name"];?>" form="order">
-					<input type="hidden" name="<?=$i;?>price" id="price" value="<?=$_SESSION["cart"][$i]["price"];?>" form="order">
-					<input type="hidden" name="<?=$i;?>quantity" id="quantity" value="<?=$_SESSION["cart"][$i]["quantity"];?>" form="order">
+					<input type="hidden" name="<?=$i;?>image" id="image" value="<?=$cart[$i]["image"];?>" form="order">
+					<input type="hidden" name="<?=$i;?>name" id="name" value="<?=$cart[$i]["name"];?>" form="order">
+					<input type="hidden" name="<?=$i;?>price" id="price" value="<?=$cart[$i]["price"];?>" form="order">
+					<input type="hidden" name="<?=$i;?>quantity" id="quantity" value="<?=$cart[$i]["quantity"];?>" form="order">
 
 					<div class="row checkout_cart justify-content-between">
 						<div class="list_image col-2 col-md-2">
-							<img src="<?=$_SESSION["cart"][$i]["image"];?>">
+							<img src="<?=$cart[$i]["image"];?>">
 						</div>
 
 						<h3 class="col-3 col-md-4">
-							<?=$_SESSION["cart"][$i]["name"];?>
+							<?=$cart[$i]["name"];?>
 						</h3>
 						<br>
 						<p class="col-2"><b>Price:</b><br>
-							<?=$_SESSION["cart"][$i]["price"];?> SEK/St</p>
+							<?=$cart[$i]["price"];?> SEK/St</p>
 
 						<p class="col-3"><b>Qty:</b><br>
 							<a href="?minus=<?=$i?>">
 								<i class="fas fa-minus-square"></i>
 							</a>
-							<?=$_SESSION["cart"][$i]["quantity"];?>
-							<a href="?plus=<?=$i?>">
+							<?=$cart[$i]["quantity"];?>
+							<a href="?plus=<?=$cart[$i]["product_id"]?>">
 								<i class="fas fa-plus-square"></i>
 							</a>|
-							<a href="?remove=<?=$i?>">
+							<a href="?remove=<?=$cart[$i]["product_id"]?>">
 								<i class="fas fa-times"></i>
 							</a>
 						</p>
@@ -108,18 +100,12 @@ include '../includes/formvalidation.php';
 								<?=$sum;?> SEK
 							</p>							
 						
-						<?php }
-					}
-					else{?>
-						<div class="col-12">
-							<h2>Your cart is empty!</h2>
-						</div>
-						<?php } ?>
+						<?php }	?>
 													
 					</div> <!-- en cart col -->
 
-				<div class="col-12 <?php if(count($_SESSION["cart"]) === 0){ echo "d-none";}?>">
-						<input class="checkout" type="submit" value="Place order" form="order">
+				<div class="col-12 <?php if(count($cart) === 0 || empty($_SESSION['username'])){ echo "d-none";}?>">
+					<input class="checkout" type="submit" value="Place order" form="order">
 				</div>
 				
 			</div><!--end outer row -->

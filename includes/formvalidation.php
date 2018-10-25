@@ -120,41 +120,34 @@ if(isset($_SERVER)){
 			":password"     => $hashed_password,
 			]);
 
+			$statement = $pdo->prepare(
+			"SELECT id FROM users
+			WHERE username = :username;"
+			);
 
-						/*
-						
-						INSERT INTO user_info (firstname, lastname)
-			VALUES (:firstname, :lastname);
+			$statement->execute([
+			":username"     => $username,
+			]);
+
+			$user_id = $statement->fetch();
+
+			$statement = $pdo->prepare(
+			"INSERT INTO user_info (user_id, firstname, lastname, street, postal, city, phone, email)
+			VALUES (:user_id, :firstname, :lastname, :street, :postal, :city, :phone, :email);"
+			);
+
+			$statement->execute([
+			":user_id"     => $user_id['id'],
+			":firstname"     => $firstname,
+			":lastname"     => $lastname,
+			":street"     => $street,
+			":postal"     => $postal,
+			":city"     => $city,
+			":phone"     => $phone,
+			":email"     => $email,
+			]);
 			
-			INSERT INTO user_info (id)
-			SELECT id
-			FROM users
-			WHERE username = :username;
-			
-			$required = ['firstname', 'lastname', 'street', 'postal', 'city', 'phone', 'email'];
-			
-			foreach($required as $field) {			
-			$_SESSION[$field] = $_POST[$field]; 							
-		    }
-			
-			$_SESSION['count'] = $_POST['count'];
-			$_SESSION['total'] = $_POST['total'];
-			
-			for($i=0;$i<$_POST['count'];$i++){
-								
-			$_SESSION[$i . "image"] = $_POST[$i . "image"];
-			$_SESSION[$i . "name"] = $_POST[$i . "name"];
-			$_SESSION[$i . "price"] = $_POST[$i . "price"];
-			$_SESSION[$i . "quantity"] = $_POST[$i . "quantity"];
-			
-			}
-			
-			unset($_SESSION['cart']);
-			*/
-			
-			header('Location: ../index.php');
-			
-			
+			//header('Location: ../index.php');
 		}
 		
 	}

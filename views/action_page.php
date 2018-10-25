@@ -49,8 +49,7 @@ require '../includes/database.php';
 				}
 
 				header("Location: ../index.php?");
-			}
-			else {
+			} else {
 				//Checks whether or not a products with the same name exists in cart. If so, add qty
 				for($si=0;$si<count($cart); $si++){
 					if($_POST["name"] === $cart[$si]["name"]){
