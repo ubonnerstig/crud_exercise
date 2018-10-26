@@ -39,6 +39,10 @@ include '../includes/formvalidation.php';
 				<div class="col-12 col-md-6 checkout-form">
 					<?php if(isset($_SESSION['username'])){ ?>
 					<h2>Shipping information</h2>
+					<p><?=$user_info[0]['firstname']?> <?=$user_info[0]['lastname']?> <br>
+					<?=$user_info[0]['street']?> <br>
+					<?=$user_info[0]['postal']?> <?=$user_info[0]['city']?></p>
+					<?php highlight_string("<?php =\n" . var_export($user_info, true) . ";\n?>"); ?>
 
 					<?php }else{?>
 					<h3>Please log in before proceeding to checkout</h3>
@@ -47,6 +51,7 @@ include '../includes/formvalidation.php';
 						<input class="login-field" aria-label="Password" placeholder="Password" name="password" type="password"><br>
 						<input class="login-button" type="submit" value="Log in">	
 					</form>
+					<a href="register.php">Not a member? Register here</a>
 					<?php }?>
 				</div>
 
@@ -65,18 +70,17 @@ include '../includes/formvalidation.php';
 					<!-- DET SOM SKICKAS MED FORMULÄRET NÄR MAN LÄGGER SIN ORDER -->
 					<input type="hidden" name="count" id="count" value="<?= count($cart);?>" form="order">
 					<input type="hidden" name="total" id="total" value="<?=$sum;?>" form="order">
-					<input type="hidden" name="<?=$i;?>image" id="image" value="<?=$cart[$i]["image"];?>" form="order">
 					<input type="hidden" name="<?=$i;?>name" id="name" value="<?=$cart[$i]["name"];?>" form="order">
 					<input type="hidden" name="<?=$i;?>price" id="price" value="<?=$cart[$i]["price"];?>" form="order">
 					<input type="hidden" name="<?=$i;?>quantity" id="quantity" value="<?=$cart[$i]["quantity"];?>" form="order">
 
 					<div class="row checkout_cart justify-content-between">
 						<div class="list_image col-2 col-md-2">
-							<img src="<?=$cart[$i]["image"];?>">
+							<img src="data:image/jpeg;base64,<?=base64_encode($cart[$i]['image']);?>">	
 						</div>
 
 						<h3 class="col-3 col-md-4">
-							<?=$cart[$i]["name"];?>
+							<?=str_replace("_", " ",$cart[$i]["name"]);?>
 						</h3>
 						<br>
 						<p class="col-2"><b>Price:</b><br>

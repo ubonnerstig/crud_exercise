@@ -7,7 +7,7 @@ if(isset($_POST)){
 	if(empty($_POST["quantity"]) || $_POST["quantity"] == 0){
 		header("Location: ../index.php?");				
 	} else {
-		$statement = $pdo->prepare("SELECT product_id, user_id, name, price, image, quantity FROM cart");
+		$statement = $pdo->prepare("SELECT product_id, user_id, name, price, quantity FROM cart");
 		$statement->execute();
 		$cart = $statement->fetchAll(PDO::FETCH_ASSOC);
 		/*
@@ -41,8 +41,8 @@ if(isset($_POST)){
 			}
 		//If no product has the same name AND same user_id, add a new product to cart for this user
 		$statement = $pdo->prepare(
-		"INSERT INTO cart (product_id, user_id, name, price, image, quantity)
-		VALUES (:product_id, :user_id, :name, :price, :image, :quantity);"
+		"INSERT INTO cart (product_id, user_id, name, price, quantity)
+		VALUES (:product_id, :user_id, :name, :price, :quantity);"
 		);
 
 		$statement->execute([
@@ -50,7 +50,6 @@ if(isset($_POST)){
 		":user_id"     => $_SESSION["id"],
 		":name"     => $_POST["name"],
 		":price"     => $_POST["price"],
-		":image"     => $_POST["image"],
 		":quantity"     => $_POST["quantity"]
 		]);	
 

@@ -11,6 +11,40 @@ if(empty($_SESSION['username'])){
 }
 
 //Getting cart from database
+
+$statement = $pdo->prepare(
+"SELECT cart.product_id, cart.user_id, cart.name, cart.price, cart.quantity, products.image AS image
+FROM cart
+JOIN products
+ON products.id = cart.product_id
+WHERE user_id = :user_id");
+
+$statement->execute([
+":user_id"     => $_SESSION["id"]
+]);
+
+$cart = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+
+//Getting user information from database if user is logged in
+
+if(isset($_SESSION["username"])){
+    $statement = $pdo->prepare(
+    "SELECT firstname, lastname, street, postal, city, phone, email  
+    FROM user_info 
+    WHERE user_id = :user_id");
+    $statement->execute([
+    ":user_id"     => $_SESSION["id"]
+    ]);
+
+    $user_info = $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/*
+
+
+
+//Getting cart from database
 if(isset($_SESSION["username"])){
     $statement = $pdo->prepare(
     "SELECT product_id, name, price, image, quantity 
@@ -27,7 +61,11 @@ if(isset($_SESSION["username"])){
     $cart = $statement->fetchAll(PDO::FETCH_ASSOC);  
 }
 
-/*
+
+
+
+
+
 $products[$i]['name']
 
 date("l");

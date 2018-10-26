@@ -5,21 +5,6 @@ require 'includes/database.php';
 include 'includes/products.php'; 
 include 'includes/functions.php'; 
 	
-
-/*
-include på headern så att det blri mindre stökigt i korden (den ska ju ändå upprepas i varje html dokument)
-
-kan köra stringreplace på produktnamnen eftersom man inte vill ha mellanrum i koden helst, så kan man namge produkterna med underscore, tex produkt_namn, och sedan byta ut det när det skrivs ut på sidan.
-
-kan köra mt mb (margin top margin bottom) i bootstrap.
-om man har bestämt sig för att använda sig av bootsrtap så bör an hålla sig till deras egna css och inte hålla på att skriva över allt. 
-dumt att länka in javascript länkarna från bootstrap om man inte tänkt använda sig av dom dåd etta adderar extra tyngd till sidan.
-(kanske bra om du faktiskt lär dig flexbox (8  )
-
-Variabelnamn ( i foreach loopar tex) så är det bra med tydliga variabelnamn, så tex inte ha $products as $product, kanske istället $products as $single_product. 
-
-kör require istället för include?
-*/
 ?>
 
 <!DOCTYPE html>
@@ -44,8 +29,7 @@ kör require istället för include?
 <?php
 		include 'includes/cart.php';
 
-	/*	highlight_string("<?php =\n" . var_export($products, true) . ";\n?>"); */
-		
+		/*highlight_string("<?php =\n" . var_export($cart, true) . ";\n?>"); */		
 ?>				
 		<header class="row justify-content-start">
 							
@@ -74,14 +58,10 @@ kör require istället för include?
 		</header>
 	
 		<main class="wrap">
-			<div class="row justify-content-around">
-				
+			<div class="row justify-content-around">	
 				<?php
 				//echo date("l");
-				for($i=0;$i<count($products);$i++){
-					
-	
-					?>
+				for($i=0;$i<count($products);$i++){	?>
 					<div class="col-12 col-md-5 col-lg-3 vara_card">
 						<div class="vara_card_img">
 							<img src="data:image/jpeg;base64,<?=base64_encode($products[$i]['image']);?>">					
@@ -90,8 +70,7 @@ kör require istället för include?
 						<p><?=$products[$i]['description'];?></p>				
 						
 						<form action="views/action_page.php" method="POST" autocomplete="off">
-							<input type="hidden" name="id" id="id" value="<?=$products[$i]['id'];?>">					
-							<input type="hidden" name="image" id="image" value="data:image/jpeg;base64,<?=base64_encode($products[$i]['image']);?>">
+							<input type="hidden" name="id" id="id" value="<?=$products[$i]['id'];?>">
 							<input type="hidden" name="name" id="name" value="<?=$products[$i]['name'];?>">
 							<input type="hidden" name="price" id="price" value="<?=$products[$i]['price'];?>">
 							<p><input class="input-add" type="number" name="quantity" id="quantity" value="1" autocomplete="off">&nbsp;<?php if(isset($old_price[$i])){ echo "<del> " . $old_price[$i] . " </del> "; } echo $products[$i]['price'];?> SEK</p>						
