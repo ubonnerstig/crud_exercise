@@ -106,17 +106,33 @@ if(isset($_SERVER)){
 		
 		if (empty($usernameErr) && empty($passwordErr) && empty($verifypasswordErr) && empty($firstnameErr) && empty($lastnameErr) && empty($streetErr) && empty($postalErr) && empty($cityErr) && empty($phoneErr) && empty($emailErr)){
 			
-			include 'database.php';
-			
+			//include 'database.php';
+
+			$statement = $pdo->prepare("SELECT username, email FROM users");
+			$statement->execute();
+			$users = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+			for($i=0;$i<count($users);$i++){
+				if($username == $users[$i]['username']){
+					$usernameErr = "Username already taken";
+					return;
+				} 
+				elseif($email == $users[$i]['email']){
+					$emailErr = "Email already registered"; 
+					return;
+				}
+			}
+						
 			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 			
 			$statement = $pdo->prepare(
-			"INSERT INTO users (username, password)
-			VALUES (:username, :password);"
+			"INSERT INTO users (username, email, password)
+			VALUES (:username, :email, :password);"
 			);
 
 			$statement->execute([
 			":username"     => $username,
+			":email"     => $email,
 			":password"     => $hashed_password,
 			]);
 

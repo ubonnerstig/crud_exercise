@@ -19,7 +19,7 @@
 
 						<li class="row justify-content-between align-items-center cart_list">	
 							<div class="list_image">
-								<img src="<?=$cart[$i]["image"];?>">
+								<img src="data:image/jpeg;base64,<?=base64_encode($cart[$i]['image']);?>">	
 							</div>
 
 							<h3 class="col-3"><?=str_replace("_", " ",$cart[$i]["name"]);?></h3>

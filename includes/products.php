@@ -6,8 +6,12 @@ $statement = $pdo->prepare("SELECT id, name, price, description, image FROM prod
 $statement->execute();
 $products = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+if(empty($_SESSION['username'])){
+    $_SESSION['id'] = 0;
+}
+
 //Getting cart from database
-if(isset($_SESSION["id"])){
+if(isset($_SESSION["username"])){
     $statement = $pdo->prepare(
     "SELECT product_id, name, price, image, quantity 
     FROM cart 
@@ -17,11 +21,12 @@ if(isset($_SESSION["id"])){
     ]);
 
     $cart = $statement->fetchAll(PDO::FETCH_ASSOC);
-}else{
+} else {
     $statement = $pdo->prepare("SELECT product_id, name, price, image, quantity FROM cart WHERE user_id = 0");
     $statement->execute();
     $cart = $statement->fetchAll(PDO::FETCH_ASSOC);  
 }
+
 /*
 $products[$i]['name']
 

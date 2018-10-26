@@ -26,9 +26,27 @@ if ($is_password_correct){
 
 	if(count($cart) === 0){
 
-		//header('Location: ../index.php');	
+		header('Location: ../index.php');	
 	}
+/* DETTA ÄR KAOS >:(  )
+	for($i=0;$i<count($cart); $i++){
+		if($cart[$i]["name"] == $cart[$i]["name"] && $cart[$i]["user_id"] == 0){
+		
+			$quantity = $cart[$i]["quantity"] + $_POST["quantity"];
 
+			$statement = $pdo->prepare(
+			"UPDATE cart 
+			SET quantity = :quantity, user_id = :user_id
+			WHERE name = :name;"
+			);
+
+			$statement->execute([
+			":quantity"     => $quantity,
+			":name"     => $_POST["name"]
+			]);	
+		} 
+	}
+	*/
 	$statement = $pdo->prepare(
 	"UPDATE cart 
 	SET user_id = :user_id
@@ -45,7 +63,7 @@ if ($is_password_correct){
 
 } else {
 	unset($_SESSION["username"]);
-	//header('Location: ../index.php?login_failed=true');
+	header('Location: ../index.php?login_failed=true');
 }
 
 

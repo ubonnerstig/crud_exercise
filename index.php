@@ -43,7 +43,7 @@ kör require istället för include?
 	
 <?php
 		include 'includes/cart.php';
-			
+
 	/*	highlight_string("<?php =\n" . var_export($products, true) . ";\n?>"); */
 		
 ?>				
@@ -84,19 +84,18 @@ kör require istället för include?
 					?>
 					<div class="col-12 col-md-5 col-lg-3 vara_card">
 						<div class="vara_card_img">
-							<img src="<?=$products[$i]['image'];?>">					
+							<img src="data:image/jpeg;base64,<?=base64_encode($products[$i]['image']);?>">					
 						</div>
 						<h3><?=str_replace("_", " ",$products[$i]['name']);?></h3>
 						<p><?=$products[$i]['description'];?></p>				
 						
 						<form action="views/action_page.php" method="POST" autocomplete="off">
 							<input type="hidden" name="id" id="id" value="<?=$products[$i]['id'];?>">					
-							<input type="hidden" name="image" id="image" value="<?=$products[$i]['image'];?>">
+							<input type="hidden" name="image" id="image" value="data:image/jpeg;base64,<?=base64_encode($products[$i]['image']);?>">
 							<input type="hidden" name="name" id="name" value="<?=$products[$i]['name'];?>">
 							<input type="hidden" name="price" id="price" value="<?=$products[$i]['price'];?>">
 							<p><input class="input-add" type="number" name="quantity" id="quantity" value="1" autocomplete="off">&nbsp;<?php if(isset($old_price[$i])){ echo "<del> " . $old_price[$i] . " </del> "; } echo $products[$i]['price'];?> SEK</p>						
-							<button class="add-to-cart" type="submit" value="Add to cart"><i class="fas fa-shopping-cart gradient-text"></i> Add to cart</button>
-													
+							<button class="add-to-cart" type="submit" value="Add to cart"><i class="fas fa-shopping-cart gradient-text"></i> Add to cart</button>													
 						</form>
 
 					</div>

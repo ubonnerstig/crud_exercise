@@ -9,15 +9,15 @@
 	}
 	$sum = total($cart);
 
-
 // To add/subtract quantity, and remove products from cart
 
 if(isset($_GET['remove'])){
 	$product_id = $_GET['remove'];
 
-	$statement = $pdo->prepare("DELETE FROM cart WHERE product_id = :product_id");
+	$statement = $pdo->prepare("DELETE FROM cart WHERE product_id = :product_id AND user_id = :user_id");
 	$statement->execute([
 		":product_id"     => $product_id,
+		":user_id"     => $_SESSION['id']
 	]);
 
 	header("Location: ?");				
@@ -29,11 +29,12 @@ if(isset($_GET['plus'])){
 	$statement = $pdo->prepare(
 	"UPDATE cart 
 	SET quantity = quantity + 1
-	WHERE product_id = :product_id;"
+	WHERE product_id = :product_id AND user_id = :user_id;"
 	);
 
 	$statement->execute([
-	":product_id"     => $product_id
+	":product_id"     => $product_id,
+	":user_id"     => $_SESSION['id']
 	]);
 
 	header("Location: ?");				
@@ -49,18 +50,20 @@ if(isset($_GET['minus'])){
 		$statement = $pdo->prepare(
 		"UPDATE cart 
 		SET quantity = quantity - 1
-		WHERE product_id = :product_id;"
+		WHERE product_id = :product_id AND user_id = :user_id;"
 		);
 	
 		$statement->execute([
-		":product_id"     => $product_id
+		":product_id"     => $product_id,
+		":user_id"     => $_SESSION['id']
 		]);
 
 		header("Location: ?");					
 	} else {
-		$statement = $pdo->prepare("DELETE FROM cart WHERE product_id = :product_id");
+		$statement = $pdo->prepare("DELETE FROM cart WHERE product_id = :product_id AND user_id = :user_id;");
 		$statement->execute([
 		":product_id"     => $product_id,
+		":user_id"     => $_SESSION['id']
 	]);
 		header("Location: ?");	
 	}			
