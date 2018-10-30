@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../includes/database.php'; 
+require '../includes/database_connection.php'; 
 include '../includes/db_fetches.php'; 
 include '../includes/functions.php'; 
 include '../includes/formvalidation.php'; 

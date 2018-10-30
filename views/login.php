@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require '../includes/database.php'; 
+require '../includes/database_connection.php'; 
 
 $username = $_POST["username"];
 $password = $_POST["password"];

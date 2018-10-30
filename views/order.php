@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../includes/database.php'; 
+require '../includes/database_connection.php'; 
 
 if(empty($_POST)){
     header("Location: checkout.php?");
