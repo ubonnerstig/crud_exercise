@@ -1,34 +1,14 @@
 <?php
 session_start();
-
-if (empty($_SESSION) == false){
-
-			$firstname = $_SESSION['firstname'];
-			$lastname = $_SESSION['lastname'];
-			$street = $_SESSION['street'];
-			$postal = $_SESSION['postal'];
-			$city = $_SESSION['city'];
-			$phone = $_SESSION['phone'];
-			$email = $_SESSION['email'];
-			
-				
-			$count = $_SESSION['count'];
-			$total = $_SESSION['total'];
-			
-			for($i=0;$i<$count;$i++){
-								
-			$image[$i] = $_SESSION[$i . "image"];
-			$name[$i] = $_SESSION[$i . "name"];
-			$price[$i] = $_SESSION[$i . "price"];
-			$quantity[$i] = $_SESSION[$i . "quantity"];
-			}
-}
-
+require '../includes/database.php'; 
+include '../includes/products.php'; 
+include '../includes/functions.php'; 
+include '../includes/formvalidation.php'; 
+	
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -40,98 +20,110 @@ if (empty($_SESSION) == false){
 
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-</head>
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
 
+</head>
 <body>
 	<div class="container-fluid">
-
-<?php
-		include 'cart.php'
-?>
-
-		<header class="row justify-content-start">
+					
+		<header class="row justify-content-start">						
 			<div class="col-12 col-md-6 logo">
-				<a href="index.php">
-					<h1 class="gradient-text">LIGHT <i class="fas fa-moon gradient-text"></i> <br>TRAVEL </h1>
-				</a>
+				<a href="../index.php"><h1 class="gradient-text">LIGHT <i class="fas fa-moon gradient-text"></i> <br>TRAVEL </h1></a>
 			</div>
 		</header>
 
 		<main class="wrap">
 
 			<div class="row justify-content-around">
+			
+				<div class="col-12 col-md-6 checkout-form">
+					<?php if(isset($_SESSION['username'])){ ?>
+					<h2>Shipping information</h2>
+					<p><?=$user_info[0]['firstname']?> <?=$user_info[0]['lastname']?> <br>
+					<?=$user_info[0]['street']?> <br>
+					<?=$user_info[0]['postal']?> <?=$user_info[0]['city']?></p>
+					<p><b>Phone:</b> <?=$user_info[0]['phone']?>  <br>
+					<b>Email:</b> <?=$user_info[0]['email']?>  </p>
 
-				<?php if(empty($_SESSION)==false){ ?>
-				<div class="col-12">
-					<h2>Thanks for your order, <?=$firstname?>!</h2>
-					<p>Below you can find your order details.</p>
+					<form action="order.php" method="POST" id="order">
+						<input type="hidden" name="user_id" id="user_id" value="<?=$_SESSION["id"]?>" form="order">
+					</form>
+					
+
+					<?php /* highlight_string("<?php =\n" . var_export($cart, true) . ";\n?>"); */
+				}else{?>
+					<h3>Please log in before proceeding to checkout</h3>
+					<form action="login.php" method="POST">
+						<input class="login-field" aria-label="Username" placeholder="Username" name="username" type="text"><br>
+						<input class="login-field" aria-label="Password" placeholder="Password" name="password" type="password"><br>
+						<input class="login-button" type="submit" value="Log in">	
+					</form>
+					<a href="register.php">Not a member? Register here</a>
+					<?php }?>
 				</div>
 
 				<div class="col-12 col-md-6">
-					<h2>Shipment information</h2>
-					<p>
-						<?=$firstname . " " . $lastname ?><br>
-						<?=$street?><br>
-						<?=$postal . " " . $city ?>
-					</p>
-					<p>
-						Mail: <?=$email?><br>
-						Phone: <?=$phone?><br>
-					</p>
-				</div>
-
-
-			<div class="col-12 col-md-6">
-					<h2>Purchase</h2>				
-						<?php 
-							for($i=0;$i<$count;$i++){								
+					<h2>Cart</h2>
+					<?php 
+						if(count($cart) === 0){
 							?>
-					<div class="row justify-content-around checkout_cart">
+						<h2>Your cart is empty!</h2>				
+					<?php 
+						} else {
+							for($i=0;$i<count($cart);$i++){						
+							?>
+							
+					<!-- The form for the order -->
+						<input type="hidden" name="number_of_products" id="number_of_products" value="<?= count($cart) ;?>" form="order">
+						<input type="hidden" name="<?=$i;?>product_id" id="product_id" value="<?= $cart[$i]["product_id"];?>" form="order">
+						<input type="hidden" name="<?=$i;?>product_name" id="product_name" value="<?=$cart[$i]["name"];?>" form="order">
+						<input type="hidden" name="<?=$i;?>price" id="price" value="<?=$cart[$i]["price"];?>" form="order">
+						<input type="hidden" name="<?=$i;?>quantity" id="quantity" value="<?=$cart[$i]["quantity"];?>" form="order">
+
+					<div class="row checkout_cart justify-content-between">
 						<div class="list_image col-2 col-md-2">
-							<img src="<?=$image[$i];?>">
+							<img src="data:image/jpeg;base64,<?=base64_encode($cart[$i]['image']);?>">	
 						</div>
 
-						<h3 class="col-3 col-md-3">
-							<?=$name[$i];?>
+						<h3 class="col-3 col-md-4">
+							<?=str_replace("_", " ",$cart[$i]["name"]);?>
 						</h3>
+						<br>
+						<p class="col-2"><b>Price:</b><br>
+							<?=$cart[$i]["price"];?> SEK/St</p>
 
-						<p class="col-2 col-md-2"><b>Qty:</b>
-							<?=$quantity[$i];?>
+						<p class="col-3"><b>Qty:</b><br>
+							<a href="?minus=<?=$i?>">
+								<i class="fas fa-minus-square"></i>
+							</a>
+							<?=$cart[$i]["quantity"];?>
+							<a href="?plus=<?=$cart[$i]["product_id"]?>">
+								<i class="fas fa-plus-square"></i>
+							</a>|
+							<a href="?remove=<?=$cart[$i]["product_id"]?>">
+								<i class="fas fa-times"></i>
+							</a>
 						</p>
-
-						<p class="col-4"><b>Price:</b><br>
-							<?=$price[$i];?> SEK/st <br> 
-							<?=$price[$i]*$quantity[$i];?> SEK/<?=$quantity[$i];?>st
-						</p>
-					</div>
-					
-					<?php }?>
-					<div class="col-12">
-						<p>
-							<b>Totalt:</b>
-							<?=$total;?> SEK
-						</p>
-					</div>
-
-						<?php }else { ?>
+					</div><!-- end row checkout_cart -->
+						<?php }?>											
+							<p class="col-12"><b>Total:</b>
+								<?=$sum;?> SEK
+							</p>							
 						
-						<div class="col-12">
-							<h2>Your cart is empty!</h2>
-						</div>
-					
-					<?php }
-					session_destroy(); // FÖRSTÖR SESSION PGA ANNARS FINNS ENS ORDER KVAR PÅ URL'EN OCH DET ÄR KNAS??
-					 ?>
-				</div> <!-- end cart row -->
-			</div>
+						<?php }	?>
+													
+					</div> <!-- en cart col -->
 
-	</main> <!-- end wrap -->
+				<div class="col-12 <?php if(count($cart) === 0 || empty($_SESSION['username'])){ echo "d-none";}?>">
+					<input class="checkout" type="submit" value="Place order" form="order">
+				</div>
+				
+			</div><!--end outer row -->
 
-	<footer class="row">
-
+		</main> <!-- end wrap -->
+	<footer>		
 	</footer>
-
+	
 	</div> <!-- end container-fluid -->
 
 	<!-- Optional JavaScript -->

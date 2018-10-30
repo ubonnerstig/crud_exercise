@@ -1,5 +1,5 @@
 <?php
-// Calculates sum of cart
+// Calculates sum of cart or order
 	function total($cart){
 		$sum=0;
 		for($i=0;$i<count($cart);$i++){
@@ -7,7 +7,15 @@
 		}
 		return number_format($sum,2);
 	}
-	$sum = total($cart);
+
+	//Checks if the function is gonna calculate the total of the cart or the order, depending on if an order is placed or not
+	if(!empty($_SESSION['order_id'])){
+		$product_array = $order;
+	} else {
+		$product_array = $cart;
+	}
+	$sum = total($product_array);
+
 
 // To add/subtract quantity, and remove products from cart
 

@@ -1,12 +1,11 @@
 <?php
 session_start();
+
 require '../includes/database.php'; 
 include '../includes/products.php'; 
 include '../includes/functions.php'; 
-include '../includes/formvalidation.php'; 
 	
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,103 +20,102 @@ include '../includes/formvalidation.php';
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
 	<link rel="stylesheet" type="text/css" href="../css/style.css">
-
 </head>
+
 <body>
 	<div class="container-fluid">
-					
-		<header class="row justify-content-start">						
-					<div class="col-12 col-md-6 logo">
-						<a href="../index.php"><h1 class="gradient-text">LIGHT <i class="fas fa-moon gradient-text"></i> <br>TRAVEL </h1></a>
-					</div>
+	<?php
+		include '../includes/cart.php';
+
+	?>
+
+		<header class="row justify-content-start">
+			<div class="col-12 col-md-6 logo">
+				<a href="../index.php">
+					<h1 class="gradient-text">LIGHT <i class="fas fa-moon gradient-text"></i> <br>TRAVEL </h1>
+				</a>
+			</div>
 		</header>
 
 		<main class="wrap">
 
 			<div class="row justify-content-around">
-			
-				<div class="col-12 col-md-6 checkout-form">
-					<?php if(isset($_SESSION['username'])){ ?>
-					<h2>Shipping information</h2>
-					<p><?=$user_info[0]['firstname']?> <?=$user_info[0]['lastname']?> <br>
-					<?=$user_info[0]['street']?> <br>
-					<?=$user_info[0]['postal']?> <?=$user_info[0]['city']?></p>
-					<?php highlight_string("<?php =\n" . var_export($user_info, true) . ";\n?>"); ?>
 
-					<?php }else{?>
-					<h3>Please log in before proceeding to checkout</h3>
-					<form action="login.php" method="POST">
-						<input class="login-field" aria-label="Username" placeholder="Username" name="username" type="text"><br>
-						<input class="login-field" aria-label="Password" placeholder="Password" name="password" type="password"><br>
-						<input class="login-button" type="submit" value="Log in">	
-					</form>
-					<a href="register.php">Not a member? Register here</a>
-					<?php }?>
+				<?php if(empty($_SESSION['order_id'])){ ?>
+
+				<div class="col-12">
+					<h2>Your cart is empty!</h2>
+				</div>
+
+				<?php } else { ?>
+
+				<div class="col-12">
+					<h2>Thanks for your order, <?=$user_info[0]['firstname']?>!</h2>
+					<p>Your order number is <b><?=$order[0]["order_id"]?></b>. Below you can find your order details.</p>
 				</div>
 
 				<div class="col-12 col-md-6">
-					<h2>Cart</h2>
-					<?php 
-						if(count($cart) === 0){
-							?>
-						<h2>Your cart is empty!</h2>				
-					<?php 
-						}
-						else {
-							for($i=0;$i<count($cart);$i++){						
-							?>
-							
-					<!-- DET SOM SKICKAS MED FORMULÄRET NÄR MAN LÄGGER SIN ORDER -->
-					<input type="hidden" name="count" id="count" value="<?= count($cart);?>" form="order">
-					<input type="hidden" name="total" id="total" value="<?=$sum;?>" form="order">
-					<input type="hidden" name="<?=$i;?>name" id="name" value="<?=$cart[$i]["name"];?>" form="order">
-					<input type="hidden" name="<?=$i;?>price" id="price" value="<?=$cart[$i]["price"];?>" form="order">
-					<input type="hidden" name="<?=$i;?>quantity" id="quantity" value="<?=$cart[$i]["quantity"];?>" form="order">
+					<h2>Shipment information</h2>
+					<p>
+						<?=$user_info[0]['firstname'] . " " . $user_info[0]['lastname'] ?><br>
+						<?=$user_info[0]['street']?><br>
+						<?=$user_info[0]['postal'] . " " . $user_info[0]['city'] ?>
+					</p>
+					<p>
+						<b>Mail:</b> <?=$user_info[0]['email']?><br>
+						<b>Phone:</b> <?=$user_info[0]['phone']?><br>
+					</p>
+				</div>
 
-					<div class="row checkout_cart justify-content-between">
+
+			<div class="col-12 col-md-6">
+					<h2>Purchase</h2>				
+						<?php 
+							for($i=0;$i<count($order);$i++){								
+							?>
+					<div class="row justify-content-around checkout_cart">
 						<div class="list_image col-2 col-md-2">
-							<img src="data:image/jpeg;base64,<?=base64_encode($cart[$i]['image']);?>">	
+							<img src="data:image/jpeg;base64,<?=base64_encode($order[$i]['image']);?>">
 						</div>
 
-						<h3 class="col-3 col-md-4">
-							<?=str_replace("_", " ",$cart[$i]["name"]);?>
+						<h3 class="col-3 col-md-3">
+							<?=str_replace("_", " ",$order[$i]["product_name"]);?>
 						</h3>
-						<br>
-						<p class="col-2"><b>Price:</b><br>
-							<?=$cart[$i]["price"];?> SEK/St</p>
 
-						<p class="col-3"><b>Qty:</b><br>
-							<a href="?minus=<?=$i?>">
-								<i class="fas fa-minus-square"></i>
-							</a>
-							<?=$cart[$i]["quantity"];?>
-							<a href="?plus=<?=$cart[$i]["product_id"]?>">
-								<i class="fas fa-plus-square"></i>
-							</a>|
-							<a href="?remove=<?=$cart[$i]["product_id"]?>">
-								<i class="fas fa-times"></i>
-							</a>
+						<p class="col-2 col-md-2"><b>Qty:</b>
+							<?=$order[$i]['quantity'];?>
 						</p>
-					</div><!-- end row checkout_cart -->
-						<?php }?>											
-							<p class="col-12"><b>Totalt:</b>
-								<?=$sum;?> SEK
-							</p>							
+
+						<p class="col-4"><b>Price:</b><br>
+							<?=$order[$i]['price'];?> SEK/st <br> 
+							<?=$order[$i]['price']*$order[$i]['quantity'];?> SEK/<?=$order[$i]['quantity'];?>st
+						</p>
+					</div>
+					
+					<?php }?>
+					<div class="col-12">
+						<p>
+							<b>Total:</b>
+							<?=$sum;?> SEK
+						</p>
+					</div>
 						
-						<?php }	?>
-													
-					</div> <!-- en cart col -->
+						
+					
+					<?php }
+					 // Makes sure order_id is empty after user leaves the page, both so the 'total' function starts calculating total from cart again, 
+					 //and so the user cant go back to the order confirmation via url.
+					unset($_SESSION['order_id']);
+					 ?>
+				</div> <!-- end cart row -->
+			</div>
 
-				<div class="col-12 <?php if(count($cart) === 0 || empty($_SESSION['username'])){ echo "d-none";}?>">
-					<input class="checkout" type="submit" value="Place order" form="order">
-				</div>
-				
-			</div><!--end outer row -->
+	</main> <!-- end wrap -->
 
-		</main> <!-- end wrap -->
-	<footer>		
+	<footer class="row">
+
 	</footer>
-	
+
 	</div> <!-- end container-fluid -->
 
 	<!-- Optional JavaScript -->

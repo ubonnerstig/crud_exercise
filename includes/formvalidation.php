@@ -9,6 +9,11 @@ if(isset($_SERVER)){
 	  return $data;
 	}
 	
+	/* Giving variables below an empty string as value
+	Later in if statements first checks if variable is empty (which it is if user havent filled out the entire form).
+	Assigns $_POST[value] to a new variable, then goes on to check if the variable contains anything else than the characters given for specific variable.
+	So if it contains anythingelse than the preg_match values, there will be an error, that prints out by given field in the form. 
+	*/
 	$username = $password = $verifypassword = $firstname = $lastname = $street = $postal = $city = $phone = $email = "";
 	$usernameErr = $passwordErr = $verifypasswordErr = $firstnameErr = $lastnameErr = $streetErr = $postalErr = $cityErr = $phoneErr = $emailErr = "";
 
@@ -27,8 +32,12 @@ if(isset($_SERVER)){
 			$passwordErr = "*";
 		} else {
 			$password = test_input($_POST["password"]);
-			if (!preg_match("/^[a-zA-Z0-9]*$/",$password)) {
-		  	$passwordErr = "Only letters numbers"; 
+			// Was supposed to check stringlength with preg_match but couldn't make it work
+			if (strlen($password) < 8) {
+			$passwordErr = "Password is too short"; 
+			}
+			if (!preg_match("/^[a-zA-Z0-9!@#$%]*$/",$password)) {
+		  	$passwordErr = "Only letters or numbers"; 
 			}
 		}
 		
@@ -104,10 +113,10 @@ if(isset($_SERVER)){
 			}
 		}
 		
+		//If all error variables are empty
 		if (empty($usernameErr) && empty($passwordErr) && empty($verifypasswordErr) && empty($firstnameErr) && empty($lastnameErr) && empty($streetErr) && empty($postalErr) && empty($cityErr) && empty($phoneErr) && empty($emailErr)){
-			
-			//include 'database.php';
 
+		// Gets email and username from database to check if there already is a user with the username and/or email the new user is trying to register with
 			$statement = $pdo->prepare("SELECT username, email FROM users");
 			$statement->execute();
 			$users = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -163,7 +172,7 @@ if(isset($_SERVER)){
 			":email"     => $email,
 			]);
 			
-			//header('Location: ../index.php');
+			header('Location: ?success');
 		}
 		
 	}

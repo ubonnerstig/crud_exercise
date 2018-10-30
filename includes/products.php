@@ -27,7 +27,6 @@ $cart = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 
 //Getting user information from database if user is logged in
-
 if(isset($_SESSION["username"])){
     $statement = $pdo->prepare(
     "SELECT firstname, lastname, street, postal, city, phone, email  
@@ -38,6 +37,21 @@ if(isset($_SESSION["username"])){
     ]);
 
     $user_info = $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+if(isset($_SESSION['order_id'])){
+    $statement = $pdo->prepare(
+    "SELECT orders.order_id, orders.user_id, orders.product_id, orders.product_name, orders.price, orders.quantity, products.image AS image
+    FROM orders
+    JOIN products
+    ON products.id = orders.product_id
+    WHERE order_id = :order_id");
+
+    $statement->execute([
+    ":order_id"     => $_SESSION['order_id']
+    ]);
+
+    $order = $statement->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /*

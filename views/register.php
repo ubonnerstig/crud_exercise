@@ -49,9 +49,11 @@ include '../includes/formvalidation.php';
 						<input class="input-style" aria-label="Verify password" id="verifypassword" name="verifypassword" type="password" placeholder="Verify password">
 						<span class="error"><?=$verifypasswordErr;?></span><br>	
 					</form>
+					<?php if(isset($_GET["success"])){ ?>
+					<p class="success">Registration complete</p>
+				<?php } ?>
 				</div>
-
-				
+	
 				<div class="col-12 col-md-6 checkout-form">
 					<h2>Shipping information</h2>
 					

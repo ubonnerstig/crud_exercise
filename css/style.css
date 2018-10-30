@@ -295,6 +295,11 @@ header ul li p {
 	font-size: 0.8rem;
 }
 
+.success{
+	color: #0bb105;
+	font-size: 0.8rem;
+}
+
 
 .checkout_cart {
 	padding: 0;

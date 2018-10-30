@@ -13,8 +13,7 @@
 						<li>	
 							<h2>Your cart is empty!</h2>
 						</li>
-					<?php }
-					else {
+					<?php } else {
 						for($i=0;$i<count($cart);$i++){	?>
 
 						<li class="row justify-content-between align-items-center cart_list">	
@@ -44,7 +43,7 @@
 						</li>
 					<?php } ?>
 					<li class="nav-item">
-						<a class="nav-link checkout" href="views/confirm.php">CHECKOUT</a>
+						<a class="nav-link checkout" href="views/checkout.php">CHECKOUT</a>
 					</li>
 				</ul>
 			</div>
