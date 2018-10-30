@@ -2,7 +2,7 @@
 session_start();
 
 require 'includes/database.php'; 
-include 'includes/products.php'; 
+include 'includes/db_fetches.php'; 
 include 'includes/functions.php'; 
 	
 ?>

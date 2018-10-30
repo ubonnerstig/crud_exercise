@@ -14,9 +14,10 @@ if(empty($_POST)){
 
    $_SESSION['order_id'] = $last_order[0]['max_id'] + 1;
 
+    // Loops through $_POST to get everyproduct, then adds each one individually to database
     for($i=0;$i<$_POST['number_of_products']; $i++){
 
-    $statement = $pdo->prepare(
+        $statement = $pdo->prepare(
         "INSERT INTO orders (order_id, user_id, product_id, product_name, price, quantity)
         VALUES (:order_id, :user_id, :product_id, :product_name, :price, :quantity);
         
@@ -34,6 +35,5 @@ if(empty($_POST)){
     }
     header("Location: confirm.php?");
 }
-
 
 ?>

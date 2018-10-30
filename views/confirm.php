@@ -2,7 +2,7 @@
 session_start();
 
 require '../includes/database.php'; 
-include '../includes/products.php'; 
+include '../includes/db_fetches.php'; 
 include '../includes/functions.php'; 
 	
 ?>
@@ -24,11 +24,7 @@ include '../includes/functions.php';
 
 <body>
 	<div class="container-fluid">
-	<?php
-		include '../includes/cart.php';
-
-	?>
-
+		<?php include '../includes/cart.php'; ?>
 		<header class="row justify-content-start">
 			<div class="col-12 col-md-6 logo">
 				<a href="../index.php">
