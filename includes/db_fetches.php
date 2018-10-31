@@ -53,30 +53,5 @@ if(isset($_SESSION['order_id'])){
     $order = $statement->fetchAll(PDO::FETCH_ASSOC);
 }
 
-/*
-
-$products[$i]['name']
-
-date("l");
-for($i=0;$i<count($varor); $i++)
-
-if(date("l") === "Monday"){
-$old_price[$i] = $varor[$i]['price'];
-$varor[$i]['price'] = number_format($varor[$i]['price']*0.5,2);
-
-}
-
-elseif(date("l") === "Wednesday"){
-$old_price[$i] = $varor[$i]['price'];
-$varor[$i]['price'] = number_format($varor[$i]['price']*1.1,2);
-}
-
-elseif(date("l") === "Friday" && $varor[$i]['price'] > 200){
-$old_price[$i] = $varor[$i]['price'];
-$varor[$i]['price'] = number_format($varor[$i]['price']-20,2);
-
-}
-*/
-
 ?>
 

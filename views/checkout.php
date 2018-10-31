@@ -24,14 +24,11 @@ include '../includes/formvalidation.php';
 
 </head>
 <body>
-	<div class="container-fluid">
-					
-		<header class="row justify-content-start">						
-			<div class="col-12 col-md-6 logo">
-				<a href="../index.php"><h1 class="gradient-text">LIGHT <i class="fas fa-moon gradient-text"></i> <br>TRAVEL </h1></a>
-			</div>
-		</header>
-
+	<div class="container-fluid">				
+		<?php 
+		include '../includes/cart.php';
+		include '../includes/header.php';
+		?>	
 		<main class="wrap">
 
 			<div class="row justify-content-around">
@@ -54,11 +51,11 @@ include '../includes/formvalidation.php';
 				}else{?>
 					<h3>Please log in before proceeding to checkout</h3>
 					<form action="login.php" method="POST">
-						<input class="login-field" aria-label="Username" placeholder="Username" name="username" type="text"><br>
-						<input class="login-field" aria-label="Password" placeholder="Password" name="password" type="password"><br>
-						<input class="login-button" type="submit" value="Log in">	
+						<input class="input-style" aria-label="Username" placeholder="Username" name="username" type="text"><br>
+						<input class="input-style" aria-label="Password" placeholder="Password" name="password" type="password"><br>
+						<input class="login-button" type="submit" value="Sign in">	
 					</form>
-					<a href="register.php">Not a member? Register here</a>
+					<a href="register.php">New around here? Sign up</a>
 					<?php }?>
 				</div>
 
@@ -77,7 +74,7 @@ include '../includes/formvalidation.php';
 						<input type="hidden" name="number_of_products" id="number_of_products" value="<?= count($cart) ;?>" form="order">
 						<input type="hidden" name="<?=$i;?>product_id" id="product_id" value="<?= $cart[$i]["product_id"];?>" form="order">
 						<input type="hidden" name="<?=$i;?>product_name" id="product_name" value="<?=$cart[$i]["name"];?>" form="order">
-						<input type="hidden" name="<?=$i;?>price" id="price" value="<?=$cart[$i]["price"];?>" form="order">
+						<input type="hidden" name="<?=$i;?>price" id="price" value="<?=priceCalculator($cart[$i]["price"]);?>" form="order">
 						<input type="hidden" name="<?=$i;?>quantity" id="quantity" value="<?=$cart[$i]["quantity"];?>" form="order">
 
 					<div class="row checkout_cart justify-content-between">

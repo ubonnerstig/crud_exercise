@@ -21,18 +21,12 @@ include '../includes/functions.php';
 
 	<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
-
 <body>
 	<div class="container-fluid">
-		<?php include '../includes/cart.php'; ?>
-		<header class="row justify-content-start">
-			<div class="col-12 col-md-6 logo">
-				<a href="../index.php">
-					<h1 class="gradient-text">LIGHT <i class="fas fa-moon gradient-text"></i> <br>TRAVEL </h1>
-				</a>
-			</div>
-		</header>
-
+		<?php 
+		include '../includes/cart.php';
+		include '../includes/header.php';
+		?>	
 		<main class="wrap">
 
 			<div class="row justify-content-around">
@@ -65,10 +59,8 @@ include '../includes/functions.php';
 
 
 			<div class="col-12 col-md-6">
-					<h2>Purchase</h2>				
-						<?php 
-							for($i=0;$i<count($order);$i++){								
-							?>
+				<h2>Purchase</h2>				
+				<?php for($i=0;$i<count($order);$i++){ ?>
 					<div class="row justify-content-around checkout_cart">
 						<div class="list_image col-2 col-md-2">
 							<img src="data:image/jpeg;base64,<?=base64_encode($order[$i]['image']);?>">
@@ -83,34 +75,30 @@ include '../includes/functions.php';
 						</p>
 
 						<p class="col-4"><b>Price:</b><br>
-							<?=$order[$i]['price'];?> SEK/st <br> 
-							<?=$order[$i]['price']*$order[$i]['quantity'];?> SEK/<?=$order[$i]['quantity'];?>st
+							<?=number_format($order[$i]['price'],2);?> SEK/st <br> 
+							<?=number_format($order[$i]['price']*$order[$i]['quantity'],2);?> SEK/<?=$order[$i]['quantity'];?>st
 						</p>
 					</div>
 					
-					<?php }?>
+					<?php } ?>
 					<div class="col-12">
 						<p>
 							<b>Total:</b>
 							<?=$sum;?> SEK
 						</p>
 					</div>
-						
-						
-					
-					<?php }
-					 // Makes sure order_id is empty after user leaves the page, both so the 'total' function starts calculating total from cart again, 
-					 //and so the user cant go back to the order confirmation via url.
-					unset($_SESSION['order_id']);
-					 ?>
+
+				<?php }
+				// Makes sure order_id is empty after user leaves the page, both so the 'total' function starts calculating total from cart again, 
+				//and so the user cant go back to the order confirmation via url.
+				//unset($_SESSION['order_id']);
+				?>
 				</div> <!-- end cart row -->
 			</div>
 
-	</main> <!-- end wrap -->
+		</main> <!-- end wrap -->
 
-	<footer class="row">
-
-	</footer>
+		<footer class="row">	</footer>
 
 	</div> <!-- end container-fluid -->
 

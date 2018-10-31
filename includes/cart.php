@@ -1,7 +1,6 @@
 <div class="row sticky-cart justify-content-end">
 	<div class="col-12 col-md-6 col-lg-5 dropdown_wrap">
 		<nav class="cart justify-content-end">
-
 			<button class="cart-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle cart">
 				<i class="fas fa-shopping-cart gradient-text"></i><p class="d-none d-md-inline">&ensp; SHOPPING CART</p>
 			</button>
@@ -23,7 +22,7 @@
 
 							<h3 class="col-3"><?=str_replace("_", " ",$cart[$i]["name"]);?></h3>
 
-							<p class="col-3"><b>Price:</b> <br><?=$cart[$i]["price"];?> SEK/st</p>
+							<p class="col-3"><b>Price:</b> <br><?=priceCalculator($cart[$i]["price"]);?> SEK/st</p>
 
 							<p class="col-2">
 								<b>Qty:</b><br>
@@ -43,7 +42,7 @@
 						</li>
 					<?php } ?>
 					<li class="nav-item">
-						<a class="nav-link checkout" href="views/checkout.php">CHECKOUT</a>
+						<a class="nav-link checkout" href="checkout.php">CHECKOUT</a>
 					</li>
 				</ul>
 			</div>

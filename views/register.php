@@ -26,15 +26,10 @@ include '../includes/formvalidation.php';
 <body>
 
 	<div class="container-fluid">	
-	<?php
-		include '../includes/cart.php'
-	?>					
-		<header class="row justify-content-start">						
-			<div class="col-12 col-md-6 logo">
-				<a href="../index.php"><h1 class="gradient-text">LIGHT <i class="fas fa-moon gradient-text"></i> <br>TRAVEL </h1></a>
-			</div>
-		</header>
-
+		<?php 
+		include '../includes/cart.php';
+		include '../includes/header.php';
+		?>					
 		<main class="wrap">
 
 			<div class="row justify-content-around">
