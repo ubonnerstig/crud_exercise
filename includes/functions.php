@@ -19,7 +19,7 @@ function total($cart){
 
 	for($i=0;$i<count($cart);$i++){
 		
-		/*Since the price might change depending on which day it is, and a cart is saved permamentely on a user i didnt wanna send
+		/*Since the price might change depending on which day it is, and a cart is saved permamentely on a user, i didnt want to send
 		the calculated price to the cart database, since the user might checkout on a day when that price isnt valid. 
 		Therefor we wanna calculate the price when we check the sum in the cart so it's up to date, but when we check the sum for
 		an order we want to calculate the actual prices we've sent to the database*/

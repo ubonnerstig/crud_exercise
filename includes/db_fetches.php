@@ -1,13 +1,13 @@
 <?php
+//If a user isnt logged in session id = 0
+if(empty($_SESSION['username'])){
+    $_SESSION['id'] = 0;
+}
 
 //Fetching products from database
 $statement = $pdo->prepare("SELECT id, name, price, description, image FROM products");
 $statement->execute();
 $products = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-if(empty($_SESSION['username'])){
-    $_SESSION['id'] = 0;
-}
 
 //Fetching cart from database
 $statement = $pdo->prepare(
@@ -22,7 +22,6 @@ $statement->execute([
 ]);
 
 $cart = $statement->fetchAll(PDO::FETCH_ASSOC);
-
 
 //Fetching user information from database if user is logged in
 if(isset($_SESSION["username"])){

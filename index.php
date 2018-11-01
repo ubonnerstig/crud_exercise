@@ -31,14 +31,13 @@ include 'includes/functions.php';
 						<h3><?=str_replace("_", " ",$products[$i]['name']);?></h3>
 						<p><?=$products[$i]['description'];?></p>				
 						
-						<form action="views/action_page.php" method="POST" autocomplete="off">
+						<form action="views/add_to_cart.php" method="POST" autocomplete="off">
 							<input type="hidden" name="id" id="id" value="<?=$products[$i]['id'];?>">
 							<input type="hidden" name="name" id="name" value="<?=$products[$i]['name'];?>">
 							<input type="hidden" name="price" id="price" value="<?=$products[$i]['price'];?>">
 							<p><input class="input-add" type="number" name="quantity" id="quantity" value="1" autocomplete="off">&nbsp;<?php if($products[$i]['price'] != priceCalculator($products[$i]['price'])){ echo "<del> " . $products[$i]['price'] . " </del> "; } echo priceCalculator($products[$i]['price']);?> SEK</p>						
 							<button class="add-to-cart" type="submit" value="Add to cart"><i class="fas fa-shopping-cart gradient-text"></i> Add to cart</button>													
 						</form>
-
 					</div>
 				<?php } ?>
 			</div> <!-- end row -->		

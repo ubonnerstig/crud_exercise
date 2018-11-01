@@ -7,7 +7,7 @@ require '../includes/database_connection.php';
 $username = $_POST["username"];
 $password = $_POST["password"];
 
-//Fetching user info from database where the username is the same as the user typed
+//Fetching user info from database where the username is the same as sent with $_POST
 $statement = $pdo->prepare("SELECT * FROM users
 	WHERE username = :username");
 
@@ -36,7 +36,7 @@ if ($is_password_correct){
 	]);
 	$saved_cart = $statement->fetchAll(PDO::FETCH_ASSOC);
 	
-	//Getting the cart that's been saved to the database, but doesnt belong to a userID
+	//Getting the cart that's been saved to the database, but doesnt belong to an userID
 	$statement = $pdo->prepare(
 	"SELECT product_id, quantity
 	FROM cart
