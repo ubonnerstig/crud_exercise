@@ -16,100 +16,14 @@ include 'includes/functions.php';
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-	<div class="container-fluid">
-	<div class="row sticky-cart justify-content-end">
-	<div class="col-12 col-md-6 col-lg-5 dropdown_wrap">
-		<nav class="cart justify-content-end">
-			<button class="cart-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle cart">
-				<i class="fas fa-shopping-cart gradient-text"></i><p class="d-none d-md-inline">&ensp; SHOPPING CART</p>
-			</button>
-
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="cart-nav">
-
-					<?php if (count($cart) === 0){ ?>
-						<li>	
-							<h2>Your cart is empty!</h2>
-						</li>
-					<?php } else {
-						for($i=0;$i<count($cart);$i++){	?>
-
-						<li class="row justify-content-between align-items-center cart_list">	
-							<div class="list_image">
-								<img src="data:image/jpeg;base64,<?=base64_encode($cart[$i]['image']);?>">	
-							</div>
-
-							<h3 class="col-3"><?=str_replace("_", " ",$cart[$i]["name"]);?></h3>
-
-							<p class="col-3"><b>Price:</b> <br><?=priceCalculator($cart[$i]["price"]);?> SEK/st</p>
-
-							<p class="col-2">
-								<b>Qty:</b><br>
-								<a href="?minus=<?=$i?>"> 
-									<i class="fas fa-minus-square"></i>
-								</a> 
-								<?=$cart[$i]["quantity"];?>
-								<a href="?plus=<?=$cart[$i]["product_id"]?>">  
-									<i class="fas fa-plus-square"></i>
-								</a>
-							</p>
-							<p class="col-1"><a href="?remove=<?=$cart[$i]["product_id"]?>"><i class="fas fa-times"></i></a></p>
-						</li>
-						<?php } ?>
-						<li class="row justify-content-between align-items-center cart_list">	
-							<p class="col-12"><b>Totalt:</b> <?= $sum;?> SEK</p>
-						</li>
-					<?php } ?>
-					<li class="nav-item">
-						<a class="nav-link checkout" href="views/checkout.php">CHECKOUT</a>
-					</li>
-				</ul>
-			</div>
-		</nav>
-	</div>
-</div>				
-		<header class="row justify-content-between">						
-			<div class="col-12 col-md-6 logo">
-				<a href="index.php"><h1 class="gradient-text">LIGHT <i class="fas fa-moon gradient-text"></i> <br>TRAVEL </h1></a>
-			</div>
-
-			<div class="col-12 col-md-3 login-wrap">
-				<div class="dropdown login">
-					<button class="btn btn-secondary dropdown-toggle" aria_label="Log in" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="fas fa-user"></i>
-					</button>
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<?php if(isset($_SESSION['username'])){ ?>
-							<p class="dropdown-item"><b>Signed in as:</b><br> <?=$_SESSION['username']?></p>
-							<a class="login-button mx-4 my-3" href="views/logout.php">Log out</a>
-						<?php } else {?>
-							<form class="px-4 py-3" action="views/login.php" method="POST">
-								<div class="form-group">
-									<label for="username">Username</label>
-									<input class="form-control" aria-label="Username" placeholder="Username" name="username" label="username" type="text">
-								</div>
-								<div class="form-group">
-									<label for="password">Password</label>
-									<input class="form-control" aria-label="Password" placeholder="Password" name="password" label="password" type="password">
-								</div>
-								<input class="login-button" type="submit" value="Sign in">
-							</form>
-							<?php if(isset($_GET["login_failed"])){ ?>
-								<p class="error dropdown-item">Username and/or password incorrect</p>
-							<?php } ?>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="views/register.php">New around here? Sign up</a>
-						<?php } ?>	
-					</div> <!-- end dropdown-menu -->
-				</div> <!-- end dropdown login -->
-			</div> <!-- end login-wrap -->
-		</header>
-	
+	<div class="container-fluid">	
+		<?php 
+		include 'includes/cart-index.php';
+		include 'includes/header-index.php';
+		?>				
 		<main class="wrap">
 			<div class="row justify-content-around">	
-				<?php
-				//echo date("l");
-				for($i=0;$i<count($products);$i++){	?>
+				<?php for($i=0;$i<count($products);$i++){ ?>
 					<div class="col-12 col-md-5 col-lg-3 vara_card">
 						<div class="vara_card_img">
 							<img src="data:image/jpeg;base64,<?=base64_encode($products[$i]['image']);?>">					
@@ -127,15 +41,11 @@ include 'includes/functions.php';
 
 					</div>
 				<?php } ?>
-
 			</div> <!-- end row -->		
 		</main> <!-- end wrap -->
 		
-		<footer>			
-		</footer>
-
-	</div> <!-- end container-fluid -->
-	
+		<footer> </footer>
+	</div> <!-- end container-fluid -->	
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

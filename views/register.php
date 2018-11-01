@@ -12,26 +12,22 @@ include '../includes/formvalidation.php';
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 	<title>Store</title>
 
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-
 	<link rel="stylesheet" type="text/css" href="../css/style.css">
 
 </head>
 <body>
-
 	<div class="container-fluid">	
 		<?php 
 		include '../includes/cart.php';
 		include '../includes/header.php';
 		?>					
 		<main class="wrap">
-
 			<div class="row justify-content-around">
 			
 				<div class="col-12 col-md-6 checkout-form">
@@ -39,7 +35,7 @@ include '../includes/formvalidation.php';
 					<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" id="register">
 						<input class="input-style" aria-label="Username" placeholder="Username" id="username" name="username" type="text">
 						<span class="error"><?=$usernameErr;?></span><br>
-						<input class="input-style" aria-label="Password" id="password" name="password" type="password" placeholder="Password (min 8 charachters)">
+						<input class="input-style" aria-label="Password" id="password" name="password" type="password" placeholder="Password (min 8 characters)">
 						<span class="error"><?=$passwordErr;?></span><br>
 						<input class="input-style" aria-label="Verify password" id="verifypassword" name="verifypassword" type="password" placeholder="Verify password">
 						<span class="error"><?=$verifypasswordErr;?></span><br>	
@@ -75,8 +71,7 @@ include '../includes/formvalidation.php';
 			</div><!--end outer row -->
 
 		</main> <!-- end wrap -->
-	<footer>		
-	</footer>
+		<footer> </footer>
 	
 	</div> <!-- end container-fluid -->
 

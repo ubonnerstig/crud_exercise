@@ -2,27 +2,26 @@
 
 if(isset($_SERVER)){
 	
+	/*Trims away unnecessary characters, removes backslashes and making sure users cant execute scripts with the form*/
 	function test_input($data) {
-	  $data = trim($data);
-	  $data = stripslashes($data);
-	  $data = htmlspecialchars($data);
-	  return $data;
+		$data = trim($data);
+		$data = stripslashes($data);
+		$data = htmlspecialchars($data);
+		return $data;
 	}
 	
-	/* Giving variables below an empty string as value
-	Later in if statements first checks if variable is empty (which it is if user havent filled out the entire form).
-	Assigns $_POST[value] to a new variable, then goes on to check if the variable contains anything else than the characters given for specific variable.
-	So if it contains anythingelse than the preg_match values, there will be an error, that prints out by given field in the form. 
-	*/
+	// Giving all variables below an empty string as value so they are predefined
 	$username = $password = $verifypassword = $firstname = $lastname = $street = $postal = $city = $phone = $email = "";
 	$usernameErr = $passwordErr = $verifypasswordErr = $firstnameErr = $lastnameErr = $streetErr = $postalErr = $cityErr = $phoneErr = $emailErr = "";
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		
+	
+		// If the post variable is empty, set a value to the error variable which prints out on the page
 		if (empty($_POST["username"])) {
 			$usernameErr = "*";
 		} else {
 			$username = test_input($_POST["username"]);
+			//Checks if the variable contains anything else than the preg_match values, and if so returns error message
 			if (!preg_match("/^[a-zA-Z]*$/",$username)) {
 		  	$usernameErr = "Only letters and white space allowed"; 
 			}
@@ -32,12 +31,12 @@ if(isset($_SERVER)){
 			$passwordErr = "*";
 		} else {
 			$password = test_input($_POST["password"]);
-			// Was supposed to check stringlength with preg_match but couldn't make it work
+			// Makes sure the password is longer than 8 characters, otherwise returns an error
 			if (strlen($password) < 8) {
 			$passwordErr = "Password is too short"; 
 			}
 			if (!preg_match("/^[a-zA-Z0-9!@#$%]*$/",$password)) {
-		  	$passwordErr = "Only letters or numbers"; 
+		  	$passwordErr = "Only a-z, 0-9, !@#$% allowed"; 
 			}
 		}
 		
@@ -113,14 +112,15 @@ if(isset($_SERVER)){
 			}
 		}
 		
-		//If all error variables are empty
+		//Makes sure all error variables are empty before proceeding
 		if (empty($usernameErr) && empty($passwordErr) && empty($verifypasswordErr) && empty($firstnameErr) && empty($lastnameErr) && empty($streetErr) && empty($postalErr) && empty($cityErr) && empty($phoneErr) && empty($emailErr)){
 
-		// Gets email and username from database to check if there already is a user with the username and/or email the new user is trying to register with
+			// Gets email and username from database to check if there already is a user with the username and/or email the new user is trying to register with
 			$statement = $pdo->prepare("SELECT username, email FROM users");
 			$statement->execute();
 			$users = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+			//If username or email is already taken, returns an error message
 			for($i=0;$i<count($users);$i++){
 				if($username == $users[$i]['username']){
 					$usernameErr = "Username already taken";
@@ -131,9 +131,12 @@ if(isset($_SERVER)){
 					return;
 				}
 			}
-						
+			
+			//Hashes and salts password and saves it to an variable
 			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 			
+
+			//Saves username email and password in the users database
 			$statement = $pdo->prepare(
 			"INSERT INTO users (username, email, password)
 			VALUES (:username, :email, :password);"
@@ -145,6 +148,8 @@ if(isset($_SERVER)){
 			":password"     => $hashed_password,
 			]);
 
+			/* Since the userID isnt created until you have inserted the info into database, I cant get it in the first step,
+			so fetching it in a second step to be able to insert it together with the rest of the userinfo into its own db*/
 			$statement = $pdo->prepare(
 			"SELECT id FROM users
 			WHERE username = :username;"
@@ -156,6 +161,7 @@ if(isset($_SERVER)){
 
 			$user_id = $statement->fetch();
 
+			//Inserting the fetched userID into database together witch shipping and contact info
 			$statement = $pdo->prepare(
 			"INSERT INTO user_info (user_id, firstname, lastname, street, postal, city, phone, email)
 			VALUES (:user_id, :firstname, :lastname, :street, :postal, :city, :phone, :email);"
@@ -173,8 +179,7 @@ if(isset($_SERVER)){
 			]);
 			
 			header('Location: ?success');
-		}
-		
+		}		
 	}
 }
 
